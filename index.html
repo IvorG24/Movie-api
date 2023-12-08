@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmation</title>
-    <link href= "https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">  
+    <link href="https://unpkg.com/tailwindcss@^2.2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class=" h-screen w-full bg-black">
-    <div class="container w-full flex justify-center">
-        <div class="wrapper h-screen  w-screen flex justify-center items-center">
-            <div class="middle flex flex-col items-center p-20 gap-1 border-2 text-white rounded-xl ">
-                <h1 class="text-red-700 text-3xl font-bold">TvFlix</h1>
-                <h1 class="text-2xl">Age Verification</h1>
-                <p>This website contains age-restricted materials including nudity and explicit</p>
-                <p>depictions of sexual activity. By entering, you affirm that you are at least 18 years of</p>
-                <p>age or the age of majority in the jurisdiction you are accessing the website from and</p>
-                <p>you consent to viewing sexually explicit content.</p>
 
-                <div class="flex gap-8 py-6">
-                    <a href="./pages/Authentication.html"><button class="bg-red-600 px-4 py-2 rounded-md hover:bg-red-800 ease-in duration-200"> I am 18 years old or older</button></a>
-                    <a href="/Tvflix_minor/index.html"><button class="bg-gray-700 px-4 py-2 rounded-md "> I am under 18 years old</button></a>
-                </div>
+<body class="h-screen w-screen flex items-center justify-center bg-black">
+    <div class="container">
+        <div class="wrapper flex flex-col items-center p-20 gap-1 border-2 text-white rounded-xl">
+            <h1 class="text-red-700 text-3xl font-bold">TvFlix</h1>
+            <h1 class="text-2xl">Age Verification</h1>
+            <p>This website contains age-restricted materials including nudity and explicit</p>
+            <p>depictions of sexual activity. By entering, you affirm that you are at least 18 years of</p>
+            <p>age or the age of majority in the jurisdiction you are accessing the website from and</p>
+            <p>you consent to viewing sexually explicit content.</p>
+
+            <div class="flex gap-8 py-6">
+                <a href="./pages/Authentication.html"><button class="bg-red-600 px-4 py-2 rounded-md hover:bg-red-800 ease-in duration-200"> I am 18 years old or older</button></a>
+                <a href="./pages/login_minor.php"><button class="bg-gray-700 px-4 py-2 rounded-md "> I am under 18 years old</button></a>
             </div>
         </div>
     </div>
-      <script type="module" src="/assets/js/main.js"></script>
+    <script type="module" src="/assets/js/main.js"></script>
 </body>
+
 </html>

@@ -7,21 +7,16 @@ $connectionOptions = [
     "Uid" => "",
     "PWD" => ""
 ];
+
 $conn = sqlsrv_connect($serverName, $connectionOptions);
 
-        if ($conn == false) {
-        die(print_r(sqlsrv_errors(), true));
-        } else {
-        }
- $sourceQuery2 = "SELECT * FROM TVFLIX WHERE TVID = (SELECT MAX(TVID) FROM TVFLIX)";
- $results2 = sqlsrv_query($conn, $sourceQuery2);
- if ($results2 === false) {
+if ($conn == false) {
     die(print_r(sqlsrv_errors(), true));
-    }
+}
 
-$error_message = "";
 $success_message = "";
-$ageErr="";
+$error_message = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = isset($_POST["email"]) ? $_POST["email"] : "";
     $firstname = isset($_POST["firstname"]) ? $_POST["firstname"] : "";
@@ -30,45 +25,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = isset($_POST["password"]) ? $_POST["password"] : "";
     $repeatPassword = isset($_POST["repeatPassword"]) ? $_POST["repeatPassword"] : "";
 
-   
-    if ($ageErr <=18){
-        $ageErr="Age must be 18 above";
-    }else{
-        $age = $_POST["age"];
-    }
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error_message = "Invalid Email";
-    } elseif ($password !== $repeatPassword) {
-        $error_message = "Passwords do not match";
+    // Validate age
+    if ($age > 18) {
+        $error_message = "Age must be 18 or above to register.";
+        echo $error_message;
     } else {
-        $check_query = "SELECT * FROM TVFLIX WHERE EMAIL='$email'";
-        $check_result = sqlsrv_query($conn, $check_query);
-
-        if ($check_result === false) {
-            $error_message = "Error checking email availability: " . print_r(sqlsrv_errors(), true);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error_message = "Invalid Email";
+        } elseif ($password !== $repeatPassword) {
+            $error_message = "Passwords do not match";
         } else {
-            if (sqlsrv_has_rows($check_result)) {
-                $error_message = "Email already taken. Please choose a different one.";
-            } else {
-                
-                $insert_query = "INSERT INTO TVFLIX (EMAIL, FIRSTNAME, LASTNAME, AGE, PASSWORD) 
-                VALUES ('$email', '$firstname', '$lastname', '$age', '$password')";
-                    $insert_result = sqlsrv_query($conn, $insert_query);
-                
-                if ($insert_result === false) {
-                    $error_message = "Error inserting user: " . print_r(sqlsrv_errors(), true);
-                } else {
-                    header("Location:./login.html");
-                    $_SESSION["email"] = $email;
-                    $_SESSION["firstname"] = $firstname;
-                    $success_message = "Registration successful! You can now log in.";
-                }
+            $check_query = "SELECT * FROM TVFLIX WHERE EMAIL='$email'";
+            $check_result = sqlsrv_query($conn, $check_query);
 
+            if ($check_result === false) {
+                $error_message = "Error checking email availability: " . print_r(sqlsrv_errors(), true);
+            } else {
+                if (sqlsrv_has_rows($check_result)) {
+                    $error_message = "Email already taken. Please choose a different one.";
+                } else {
+                    $insert_query = "INSERT INTO TVFLIX (EMAIL, FIRSTNAME, LASTNAME, AGE, PASSWORD) 
+                    VALUES ('$email', '$firstname', '$lastname', '$age', '$password')";
+                    $insert_result = sqlsrv_query($conn, $insert_query);
+
+                    if ($insert_result === false) {
+                        $error_message = "Error inserting user: " . print_r(sqlsrv_errors(), true);
+                    } else {
+                        header("Location: ./login_minor.php");
+                        $_SESSION["email"] = $email;
+                        $_SESSION["firstname"] = $firstname;
+                        $success_message = "Registration successful! You can now log in.";
+                    }
+                }
             }
         }
     }
 }
 
+sqlsrv_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="middle flex flex-col justify-center items-center h-screen text-white">
                 <div class=" p-24 bg-black bg-opacity-70 rounded-lg border-2">
                     
-                    <h1 class="text-3xl py-4 font-semibold">Sign Up</h1>
+                    <h1 class="text-3xl py-4 font-semibold">Sign Up For Minor</h1>
     
                 <form action="" method="POST" class="flex flex-col items-center gap-5 w-full z-30">            
                     <input class="px-4 py-2 bg-gray-300 rounded-sm text-black" type="email" placeholder="Email" name="email">

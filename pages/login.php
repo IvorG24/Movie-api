@@ -22,28 +22,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = isset($_POST["email"]) ? $_POST["email"] : "";
     $password = isset($_POST["password"]) ? $_POST["password"] : "";
 
-    // Check if the email and password match
-    $login_query = "SELECT * FROM TVFLIX WHERE EMAIL='$email' AND PASSWORD='$password'";
-    $login_result = sqlsrv_query($conn, $login_query);
+    // Check if the email exists in the database
+    $check_query = "SELECT * FROM TVFLIX WHERE EMAIL='$email'";
+    $check_result = sqlsrv_query($conn, $check_query);
 
-    if (sqlsrv_has_rows($login_result)) {
-        // Set session variables on successful login
-        $_SESSION["email"] = $email;
-        $_SESSION["loggedin"] = true;
+    if (sqlsrv_has_rows($check_result)) {
+        // Fetch user's data including age
+        $user_row = sqlsrv_fetch_array($check_result, SQLSRV_FETCH_ASSOC);
+        $user_age = $user_row['AGE'];
 
-        // Redirect to homepage
-        header("Location: ../../Pages/Login/homepage.php");
-        exit();
-    } else {
-        if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-            header("Location: ../Tvflix/index.html"); // Redirect to login page
-            exit;
+        if ($user_age < 18) {
+            $errorMessage = "You must be 18 or older to log in.";
+        } else {
+            // Check if the email and password match
+            $login_query = "SELECT * FROM TVFLIX WHERE EMAIL='$email' AND PASSWORD='$password'";
+            $login_result = sqlsrv_query($conn, $login_query);
+
+            if (sqlsrv_has_rows($login_result)) {
+                // Set session variables on successful login
+                $_SESSION["email"] = $email;
+                $_SESSION["loggedin"] = true;
+
+                // Redirect to homepage
+                header("Location: ../Tvflix/index.html");
+                exit();
+            } else {
+                $errorMessage = "Incorrect email or password.";
+            }
         }
-        $errorMessage = "Incorrect email or password.";
+    } else {
+        $errorMessage = "Email not found.";
     }
-
-
 }
 
 sqlsrv_close($conn);
+
+// If the user is under 18, prevent them from passing the login
+if ($errorMessage) {
+    echo $errorMessage;
+    // Optionally, you can redirect them to a different page or display a message.
+    // For example:
+    // header("Location: login.php?error=" . urlencode($errorMessage));
+    // exit();
+}
 ?>
