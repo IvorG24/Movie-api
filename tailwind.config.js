@@ -12,7 +12,7 @@ module.exports = {
                 center: true,
             },
             backgroundImage: {
-                'netflix-image': "url('https://miro.medium.com/v2/resize:fit:1400/1*5lyavS59mazOFnb55Z6znQ.png')",
+                'netflix-image': "url('/assets/netflix.png')",
               },
             fontSize:{
                 'logo': '200px'

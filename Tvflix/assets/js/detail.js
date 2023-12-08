@@ -13,7 +13,35 @@ const pageContent = document.querySelector("[page-content]");
 
 sidebar();
 
+const fetchWatchProviders = (movieId) => {
+  const url = `https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=${api_key}`;
+  console.log('Requesting URL:', url); // Debugging: Log the full URL
 
+  fetchDataFromServer(url, function (providersData) {
+    logProviders(providersData.results);
+  });
+};
+
+const logProviders = (providers) => {
+  const countryProviders = providers['US']; // Change 'US' to desired country code
+
+  if (!countryProviders) {
+    console.log("No providers found for this country.");
+    return;
+  }
+
+  if (countryProviders.flatrate) {
+    console.log('Streaming Providers:', countryProviders.flatrate.map(provider => provider.provider_name).join(", "));
+  }
+
+  if (countryProviders.rent) {
+    console.log('Rental Providers:', countryProviders.rent.map(provider => provider.provider_name).join(", "));
+  }
+
+  if (countryProviders.buy) {
+    console.log('Purchase Providers:', countryProviders.buy.map(provider => provider.provider_name).join(", "));
+  }
+};
 
 const getGenres = function (genreList) {
   const newGenreList = [];
@@ -48,6 +76,8 @@ const filterVideos = function (videoList) {
   return videoList.filter(({ type, site }) => (type === "Trailer" || type === "Teaser") && site === "YouTube");
 }
 
+
+
 fetchDataFromServer(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${api_key}&append_to_response=casts,videos,images,releases`, function (movie) {
 
   const {
@@ -59,16 +89,16 @@ fetchDataFromServer(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${api
     vote_average,
     releases: { countries: [{ certification } = { certification: "N/A" }] },
     genres,
+    
     overview,
     casts: { cast, crew },
     videos: { results: videos }
   } = movie;
-
   document.title = `${title} - Tvflix`;
 
   const movieDetail = document.createElement("div");
   movieDetail.classList.add("movie-detail");
-  
+
   movieDetail.innerHTML = `
     <div class="backdrop-image" style="background-image: url('${imageBaseURL}${"w1280" || "original"}${backdrop_path || poster_path}')"></div>
     
@@ -98,6 +128,10 @@ fetchDataFromServer(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${api
           <div class="meta-item">${release_date?.split("-")[0] ?? "Not Released"}</div>
     
           <div class="meta-item card-badge">${certification}</div>
+
+          <div class="Linkbutton"><a href="https://www.smcinema.com/Ticketing/visShop.aspx?visLang=1&AspxAutoDetectCookieSupport=1"><Button> SM Cinemas</Btton></a></div>
+          <div class="Linkbuttonrb"><a href="https://www.robinsonsmovieworld.com/"><Button>Movie World</Btton></a></div>
+          <div class="Linkbuttonay"><a href="https://www.ayalamalls.com/watch/all/now-showing"><Button>Ayala Malls</Btton></a></div>
     
         </div>
     
@@ -133,7 +167,7 @@ fetchDataFromServer(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${api
     
     </div>
   `;
-  
+
   for (const { key, name } of filterVideos(videos)) {
     const videoCard = document.createElement("div");
     videoCard.classList.add("video-card");

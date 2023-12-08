@@ -152,7 +152,39 @@ body {
   border-radius: var(--radius-8);
 }
 
+.Linkbutton{
+  background:#0047ab;
+  color: white;
+  padding: 5px;
+  border-radius: 8px;
+}
 
+.Linkbutton:hover {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Adjusted for a white shadow */
+  transition: 0.5s;
+}
+
+.Linkbuttonrb{
+  background:#d20909;
+  color: white;
+  padding: 5px;
+  border-radius: 8px;
+}
+.Linkbuttonrb:hover{
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Adjusted for a white shadow */
+  transition: 0.5s;
+}
+
+.Linkbuttonay{
+  background:#eb840e;
+  color: white;
+  padding: 5px;
+  border-radius: 8px;
+}
+.Linkbuttonay:hover{
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Adjusted for a white shadow */
+  transition: 0.5s;
+}
 
 
 
