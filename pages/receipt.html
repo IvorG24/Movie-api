@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Receipt</title>
+    <!-- Include Tailwind CSS styles -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200">
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="max-w-lg bg-white rounded-lg shadow-lg p-6 space-y-4">
+            <h1 class="text-2xl font-semibold text-center ">Movie Ticket Reservation TVFLIX</h1>
+            <div class="text-center">
+                <h2 class="text-2xl font-semibold" id="movieTitle">Movie Title: Loading...</h2>
+                <p class="text-gray-600" id="movieTime">Time: Loading...</p>
+                <p class="text-gray-600" id="pricePerTicket">Ticket Price: Loading...</p>
+                <p class="text-gray-600" id="numPersons">Number of Tickets: Loading...</p>
+            </div>
+            <div class="text-center">
+                <div class="w-32 mx-auto mb-4" id="barcodeContainer">
+                    <!-- Barcode will be generated here -->
+                </div>
+            </div>
+            <hr>
+            <p class="text-center text-gray-600">Thank you for reserving your movie tickets!</p>
+            <p class="text-center text-gray-600">Please present this ticket at the cinema.</p>
+            <p class="text-center text-gray-600">Enjoy the show!</p>
+            <img src="https://www.labelsandlabeling.com/sites/labels/lnl/files/Books/figure_1.1_-_barcodes_-_a_pattern_of_black_and_white_lines.png"  width="400" alt="">
+        </div>
+    </div>
+
+    <!-- Include JsBarcode library -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <script>
+        // Function to get URL query parameters
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                movie: params.get('movie'),
+                time: params.get('time'),
+                total: params.get('total'), // Retrieve 'total' from query parameters
+                count: params.get('count')  // Retrieve 'count' from query parameters
+            };
+        }
+    
+        // Dummy data (you can replace this with your actual data)
+        const params = getQueryParams();
+        const movieTitle = params.movie || 'Movie Title: Not Found';
+        const movieTime = params.time || 'Time: Not Found';
+        const total = params.total || 'Total: Not Found'; // Retrieve 'total' value
+        const count = params.count || 'Count: Not Found'; // Retrieve 'count' value
+    
+        // Define dynamic values for pricePerTicket and numberOfPersons (replace with your logic)
+        const pricePerTicket = 'P200.00'; // Replace with your logic
+    
+        // Update the ticket content with dynamic data
+        document.querySelector('#movieTitle').textContent = movieTitle;
+        document.querySelector('#movieTime').textContent = movieTime;
+        document.querySelector('#pricePerTicket').textContent = "Your total Bill is " +"P"+total; // Display 'total' value
+        document.querySelector('#numPersons').textContent = "You have a total of " + count + " reserve seats"; // Display 'count' value
+
+    </script>
+</html>

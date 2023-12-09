@@ -1,79 +1,134 @@
-const container = document.querySelector('.container');
-const seats = document.querySelectorAll('.row .seat:not(.occupied');
-const count = document.getElementById('count');
-const total = document.getElementById('total');
-const movieSelect = document.getElementById('movie');
-const movieImage = document.getElementById('movieImage');
+/*
+Step 1: Get references to DOM elements
+*/
+// Get a reference to the main container
+const container = document.querySelector(".container");
 
-populateUI();
-let ticketPrice = +movieSelect.value;
+// Reference of all available seats
+const seats = document.querySelectorAll(".row .seat:not(.sold)");
 
-// Save selected movie index and price
-function setMovieData(movieIndex, moviePrice) {
-  localStorage.setItem('selectedMovieIndex', movieIndex);
-  localStorage.setItem('selectedMoviePrice', moviePrice);
-}
+// Reference of the count and total elements
+const count = document.getElementById("count");
+const total = document.getElementById("total");
 
-// update total and count
+// Reference of the movie dropdown
+const movieSelect = document.getElementById("movie");
+
+/*
+Step 2: Add event listeners
+*/
+
+// Event listner for movie selection change
+movieSelect.addEventListener("change", e => {
+  //Update ticket price and store selected movie data
+  ticketPrice = +e.target.value;
+  setMovieData(e.target.selectedIndex, e.target.value);
+
+  // Update displayed count and total
+  updateSelectedCount();
+});
+
+// Event listner for seat clicks
+container.addEventListener("click", e => {
+  // check if a seat is clicked and not sold
+  if (
+    e.target.classList.contains("seat") &&
+    !e.target.classList.contains("sold")
+  ) {
+    //Toggle seat selection
+    e.target.classList.toggle("selected");
+
+    // Update displayed count and total
+    updateSelectedCount();
+  }
+});
+
+/*
+Step 3: Define funtion to update selected count and total
+*/
+
 function updateSelectedCount() {
-  const selectedSeats = document.querySelectorAll('.row .seat.selected');
+  // Get all selected seats
+  const selectedSeats = document.querySelectorAll(".row .seat.selected");
 
-  const seatsIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
+  // Get an array of selected seats's indexes
+  const seatsIndex = [...selectedSeats].map(seat => [...seats].indexOf(seat));
 
-  localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex));
+  // Store selected seats index into local storage
+  localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
 
-  //copy selected seats into arr
-  // map through array
-  //return new array of indexes
+  // Calculate selected seats and count
+  const selectedSeatsCounts = selectedSeats.length;
 
-  const selectedSeatsCount = selectedSeats.length;
+  // Update UI with selected seats count and total price
+  count.innerText = selectedSeatsCounts;
+  total.innerText = selectedSeatsCounts * ticketPrice;
 
-  count.innerText = selectedSeatsCount;
-  total.innerText = selectedSeatsCount * ticketPrice;
+  setMovieData(movieSelect.selectedIndex, movieSelect.value);
 }
 
-// get data from localstorage and populate ui
+/*
+Step 4: Define funtion to set selected movie data, in local storage
+*/
+function setMovieData(movieIndex, moviePrice) {
+  localStorage.setItem("selectedMovieIndex", movieIndex);
+  localStorage.setItem("selectedMoviePrice", moviePrice);
+}
+
+/*
+Step 5: Define funtion to populate UI with local storage data
+*/
+// Function to populate UI from local storage data
+
 function populateUI() {
-  const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
-  if (selectedSeats !== null && selectedSeats.length > 0) {
+  // Get selected seats from local storage
+  const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
+
+  // If there are selected seats, mark them as selected in the UI
+  if (selectedSeats != null && selectedSeats.length > 0) {
     seats.forEach((seat, index) => {
       if (selectedSeats.indexOf(index) > -1) {
-        seat.classList.add('selected');
+        seat.classList.add("selected");
       }
     });
   }
 
-  const selectedMovieIndex = localStorage.getItem('selectedMovieIndex');
+  // Get selected movie data from local storage
+  const selectedMovieIndex = localStorage.getItem("selectedMovieIndex");
 
+  // If there's a selected movie index, then set it in the dropdown
   if (selectedMovieIndex !== null) {
     movieSelect.selectedIndex = selectedMovieIndex;
   }
 }
 
-// Movie select event
-movieSelect.addEventListener('change', (e) => {
-  ticketPrice = +e.target.value;
-  setMovieData(e.target.selectedIndex, e.target.value);
-  updateSelectedCount();
+/*
+Step 6: Initial setup of count, total and UI based on save data
+*/
+populateUI();
 
-  // Update the displayed image when the movie is changed
-  const selectedMovieImage = localStorage.getItem('selectedMovieImage');
-  if (selectedMovieImage) {
-    movieImage.src = selectedMovieImage;
-    movieImage.alt = 'Selected Movie Image';
-  }
-});
+// Initialize ticket price
+let ticketPrice = +movieSelect.value;
 
-
-// Seat click event
-container.addEventListener('click', (e) => {
-  if (e.target.classList.contains('seat') && !e.target.classList.contains('occupied')) {
-    e.target.classList.toggle('selected');
-
-    updateSelectedCount();
-  }
-});
-
-// intial count and total
 updateSelectedCount();
 
+const selectedTime = localStorage.getItem('selectedTime');
+const timeHeader = document.getElementById('TIME');
+
+if (selectedTime) {
+    timeHeader.textContent = 'Time: ' + selectedTime;
+} else {
+    timeHeader.textContent = 'Time: Not Selected';
+}
+
+// Function to randomly mark seats as sold
+function randomizeSeats() {
+  seats.forEach(seat => {
+    if (Math.random() < 0.5) { // Adjust the probability as needed
+      seat.classList.add("sold");
+    }
+  });
+}
+
+// Call the randomizeSeats function to mark seats as sold
+randomizeSeats();

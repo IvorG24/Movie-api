@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/tailwindcss@^2.2/dist/tailwind.min.css" rel="stylesheet">
+    <title>Book a Ticket</title>
+</head>
+<body class="bg-gray-900 text-white">
+<nav class="bg-gray-800 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-semibold">Movie Ticket <span class="text-red-700">TVFLIX</span></h1>
+        <ul class="flex space-x-4">
+            <li><a href="#" class="hover:text-gray-400">Home</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mx-auto mt-8">
+    <div class="text-center">
+        <h1 class="text-3xl font-semibold mb-4">Book Your Movie Tickets</h1>
+        <p class="text-lg mb-6">Now Showing</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div class="bg-gray-800 p-4 rounded-lg">
+            <img src="https://api.mycinema.ph/VistaBookingCMS/Images/THEMARVELS---600X900_20231103173920.jpg" alt="">
+            <h2 class="text-xl text-center font-semibold mb-2">THE MARVELS</h2>
+            <h1 class="text-center">1 hrs, 45 mins</h1>
+            <div class="text-center">
+                <p>Showtimes:</p>
+                <ul>
+                    <a class="text-gray-500 underline showtime"
+                       href="#"
+                       data-time="11:00 AM - 12:40 PM"
+                       data-movie="THE MARVELS"><li>11:00 AM - 12:40 PM</li></a>
+                    <a class="text-gray-500 underline showtime"
+                       href="#"
+                       data-time="3:30 PM - 5:10 PM"
+                       data-movie="THE MARVELS"><li>3:30 PM - 5:10 PM</li></a>
+                    <a class="text-gray-500 underline showtime"
+                       href="#"
+                       data-time="6:00 PM - 7:40 PM"
+                       data-movie="THE MARVELS"><li>6:00 PM - 7:40 PM</li></a>
+                </ul>
+            </div>
+        </div>
+        
+      <div class="bg-gray-800 p-4 rounded-lg">
+    <img src="https://api.mycinema.ph/VistaBookingCMS/Images/WONKA---600X900_20231107182152.jpg" alt=""> <!-- Update with the new image URL -->
+    <h2 class="text-xl text-center font-semibold mb-2">WONKA</h2> <!-- Update with the new title -->
+    <h1 class="text-center">1 hrs, 40 mins</h1>
+    <div class="text-center">
+        <p>Showtimes:</p>
+        <ul>
+            <a class="text-gray-500 underline showtime"
+               href="#"
+               data-time="11:00 AM - 12:40 PM"
+               data-movie="WONKA"><li>11:00 AM - 12:40 PM</li></a>
+            <a class="text-gray-500 underline showtime"
+               href="#"
+               data-time="3:30 PM - 5:10 PM"
+               data-movie="WONKA"><li>3:30 PM - 5:10 PM</li></a>
+            <a class="text-gray-500 underline showtime"
+               href="#"
+               data-time="6:00 PM - 7:40 PM"
+               data-movie="WONKA"><li>6:00 PM - 7:40 PM</li></a>
+        </ul>
+    </div>
+</div>
+        
+        <!-- Movie 3 - THE SACRIFICE GAME -->
+        <div class="bg-gray-800 p-4 rounded-lg">
+            <img src="https://api.mycinema.ph/VistaBookingCMS/Images/THE-SACRIFICE-GAME-POSTER-600X900_20231204141305.jpg" alt=""> <!-- Update with the new image URL -->
+            <h2 class="text-xl text-center font-semibold mb-2">THE SACRIFICE GAME</h2> <!-- Update with the new title -->
+            <h1 class="text-center">1 hrs, 56 mins</h1>
+            <div class="text-center">
+                <p>Showtimes:</p>
+                <ul>
+                    <a class="text-gray-500 underline showtime"
+                       href="#"
+                       data-time="11:00 AM - 12:40 PM"
+                       data-movie="THE SACRIFICE GAME"><li>11:00 AM - 12:40 PM</li></a>
+                    <a class="text-gray-500 underline showtime"
+                       href="#"
+                       data-time="3:30 PM - 5:10 PM"
+                       data-movie="THE SACRIFICE GAME"><li>3:30 PM - 5:10 PM</li></a>
+                    <a class="text-gray-500 underline showtime"
+                       href="#"
+                       data-time="6:00 PM - 7:40 PM"
+                       data-movie="THE SACRIFICE GAME"><li>6:00 PM - 7:40 PM</li></a>
+                </ul>
+            </div>
+        </div>
+</div>
+
+<script>
+ const showtimeLinks = document.querySelectorAll('.showtime');
+
+showtimeLinks.forEach(link => {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const selectedTime = this.getAttribute('data-time');
+        const movieName = this.getAttribute('data-movie'); // Add data-movie attribute
+
+        // Store the selected time and movie name in local storage
+        localStorage.setItem('selectedTime', selectedTime);
+        localStorage.setItem('selectedMovie', movieName); // Store the selected movie
+
+        // Determine the booking page based on the movie name
+        let bookingPage;
+        switch (movieName) {
+            case 'THE MARVELS':
+                bookingPage = 'booking.html';
+                break;
+            case 'WONKA':
+                bookingPage = 'booking2.html';
+                break;
+            case 'THE SACRIFICE GAME':
+                bookingPage = 'booking3.html';
+                break;
+            default:
+                bookingPage = 'booking.html'; // Default to booking.html
+                break;
+        }
+
+        // Redirect to the appropriate booking page with query parameters
+        window.location.href = `${bookingPage}?movie=${encodeURIComponent(movieName)}&time=${encodeURIComponent(selectedTime)}`;
+
+        // Also, redirect to receipt.html with the same query parameters
+        window.open(`receipt.html?movie=${encodeURIComponent(movieName)}&time=${encodeURIComponent(selectedTime)}`, '_blank');
+    });
+});
+
+</script>
+
+</body>
+</html>

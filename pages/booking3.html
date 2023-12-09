@@ -10,19 +10,8 @@
     <title>Movie Ticket Booking</title>
   </head>
   <body>
-  <script>
-    // JavaScript to retrieve and display the selected time
-    document.addEventListener("DOMContentLoaded", function () {
-        const selectedTime = localStorage.getItem('selectedTime');
-        const timeHeader = document.getElementById('TIME');
-
-        if (selectedTime) {
-            timeHeader.textContent = 'Time: ' + selectedTime;
-        } else {
-            timeHeader.textContent = 'Time: Not Selected';
-        }
-    });
-    document.addEventListener("DOMContentLoaded", function () {
+    <script>
+   document.addEventListener("DOMContentLoaded", function () {
     const timeElement = document.getElementById('TIME');
     const totalElement = document.getElementById('total'); // Get the total element
     const countElement = document.getElementById('count'); // Get the count element
@@ -34,19 +23,18 @@
     const dynamicCount = countElement.textContent; // Get the count value
 
     // Create the dynamic link with the time, total, and count
-    const receiptLink = `receipt.html?movie=THE MARVELS&time=${encodeURIComponent(dynamicTime)}&total=${encodeURIComponent(dynamicTotal)}&count=${encodeURIComponent(dynamicCount)}`;
+    const receiptLink = `receipt.html?movie=THE SACRIFICE GAME&time=${encodeURIComponent(dynamicTime)}&total=${encodeURIComponent(dynamicTotal)}&count=${encodeURIComponent(dynamicCount)}`;
 
     // Set the 'href' attribute of the 'View Receipt' link
     viewReceiptLink.href = receiptLink;
 });
-    
-</script>
+    </script>
     <div class="img">
         <h1>Now Showing</h1>
-    <img src="https://api.mycinema.ph/VistaBookingCMS/Images/THEMARVELS---600X900_20231103173920.jpg" width="500" height="" alt="">
+    <img src="https://api.mycinema.ph/VistaBookingCMS/Images/THE-SACRIFICE-GAME-POSTER-600X900_20231204141305.jpg" width="500" height="" alt="">
     </div>
-    <h1>THE MARVELS</h1>
-    <h1 id="TIME" ></h1>
+    <h1>THE SACRIFICE GAME<</h1>
+    <h1 id="TIME"></h1>
     <div class="movie-container">
       <select id="movie">
         <option value="220">Gadar 2 (RS.220)</option>
@@ -147,8 +135,13 @@
         >0</span
       >
     </p>
+    <!-- Link to receipt.html with query parameters -->
     <a href="#" id="viewReceiptLink">View Receipt</a>
 
     <script src="script.js"></script>
+    <script>
+        // Call the randomizeSeats function to mark seats as sold for Movie 3 - THE SACRIFICE GAME
+        randomizeSeatsMovie3(); // Call this for Movie 3
+      </script>
   </body>
 </html>
