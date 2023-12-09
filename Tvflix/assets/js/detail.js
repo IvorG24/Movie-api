@@ -13,6 +13,7 @@ const pageContent = document.querySelector("[page-content]");
 
 sidebar();
 
+
 const fetchWatchProviders = (movieId) => {
   const url = `https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=${api_key}`;
   console.log('Requesting URL:', url); // Debugging: Log the full URL
@@ -215,5 +216,63 @@ const addSuggestedMovies = function ({ results: movieList }, title) {
 }
 
 
-
 search();
+
+// Add this script at the end of your existing JavaScript file
+document.getElementById('bookTicketBtn').addEventListener('click', function () {
+  // Get the selected movie data from localStorage
+  const selectedMovieIndex = localStorage.getItem('selectedMovieIndex');
+  const selectedMoviePrice = localStorage.getItem('selectedMoviePrice');
+
+  // Check if a movie is selected
+  if (selectedMovieIndex !== null && selectedMoviePrice !== null) {
+    // Create a URL with query parameters to pass the selected movie data
+    const bookingUrl = `booking.html?index=${selectedMovieIndex}&price=${selectedMoviePrice}`;
+
+    // Navigate to the booking.html file
+    window.location.href = bookingUrl;
+  } else {
+    alert('Please select a movie before booking a ticket.');
+  }
+});
+
+// Modify the script where you navigate to booking.html
+document.getElementById('bookTicketBtn').addEventListener('click', function () {
+  // Get the selected movie data from localStorage
+  const selectedMovieTitle = localStorage.getItem('selectedMovieTitle');
+  const selectedMovieGenre = localStorage.getItem('selectedMovieGenre');
+  const selectedMovieImage = localStorage.getItem('selectedMovieImage'); // Add this line to retrieve the image URL
+  // Retrieve more details as needed
+
+  // Check if a movie is selected
+  if (selectedMovieTitle !== null && selectedMovieGenre !== null && selectedMovieImage !== null) {
+    // Create a URL with query parameters to pass the selected movie data
+    const bookingUrl = `booking.html?title=${encodeURIComponent(selectedMovieTitle)}&genre=${encodeURIComponent(selectedMovieGenre)}&image=${encodeURIComponent(selectedMovieImage)}`;
+    // Add more query parameters as needed
+
+    // Navigate to the booking.html file
+    window.location.href = bookingUrl;
+  } else {
+    alert('Please select a movie before booking a ticket.');
+  }
+});
+
+fetchDataFromServer(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${api_key}&append_to_response=casts,videos,images,releases`), function (movie) {
+  // Existing code...
+  localStorage.setItem('selectedMovieImage', `${imageBaseURL}w342${poster_path}`);
+};
+document.addEventListener('DOMContentLoaded', function () {
+  // Get the query parameters from the URL
+  const params = new URLSearchParams(window.location.search);
+  const selectedMovieTitle = decodeURIComponent(params.get('title'));
+  const selectedMovieGenre = decodeURIComponent(params.get('genre'));
+
+  // Display the selected movie information
+  if (selectedMovieTitle !== null && selectedMovieGenre !== null) {
+    // Your existing code to display movie details
+  } else {
+    alert('Invalid or missing movie details. Please go back and try again.');
+  }
+});
+
+

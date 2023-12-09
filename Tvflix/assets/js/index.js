@@ -217,6 +217,42 @@ const createMovieList = function ({ results: movieList }, title) {
 
 }
 
+// Inside the event listener for movie selection in index.js
+document.getElementById('bookTicketBtn').addEventListener('click', function () {
+  const selectedMovieTitle = "Your selected movie title";  // Replace with the actual title
+  const selectedMovieGenre = "Your selected movie genre";  // Replace with the actual genre
+
+  // Store selected movie details in localStorage
+  localStorage.setItem('selectedMovieTitle', selectedMovieTitle);
+  localStorage.setItem('selectedMovieGenre', selectedMovieGenre);
+
+  // Navigate to details.html
+  window.location.href = 'details.html';
+});
+
 
 
 search();
+
+// Add this code at the end of your existing JavaScript file
+document.getElementById('bookTicketBtn').addEventListener('click', function () {
+  // Get the selected movie data from your application, replace with your logic
+  const selectedMovieTitle = "Your selected movie title";  // Replace with the actual title
+  const selectedMovieGenre = "Your selected movie genre";  // Replace with the actual genre
+
+  // Check if a movie is selected
+  if (selectedMovieTitle !== null && selectedMovieGenre !== null) {
+    // Store selected movie details in localStorage
+    localStorage.setItem('selectedMovieTitle', selectedMovieTitle);
+    localStorage.setItem('selectedMovieGenre', selectedMovieGenre);
+
+    // Create a URL with query parameters to pass the selected movie data
+    const detailsUrl = `details.html?title=${encodeURIComponent(selectedMovieTitle)}&genre=${encodeURIComponent(selectedMovieGenre)}`;
+    // Add more query parameters as needed
+
+    // Navigate to the details.html file
+    window.location.href = detailsUrl;
+  } else {
+    alert('Please select a movie before booking a ticket.');
+  }
+});
